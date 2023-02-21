@@ -27,8 +27,8 @@ public class ProductController {
 	
 	///Field
 	@Autowired
-	@Qualifier("userServiceImpl")
-	private ProductService userService;
+	@Qualifier("productServiceImpl")
+	private ProductService productService;
 	//setter Method 구현 않음
 		
 	public ProductController(){
@@ -46,13 +46,13 @@ public class ProductController {
 	int pageSize;
 	
 	
-	@RequestMapping("/addProductView.do")
-	public String addProductView() throws Exception {
-
-		System.out.println("/addProductView.do");
-		
-		return "redirect:/product/addProductView.jsp";
-	}
+//	@RequestMapping("/addProductView.do")
+//	public String addProductView() throws Exception {
+//
+//		System.out.println("/addProductView.do");
+//		
+//		return "redirect:/product/addProductView.jsp";
+//	}
 	
 	@RequestMapping("/addProduct.do")
 	public String addProduct( @ModelAttribute("product") Product product ) throws Exception {
@@ -60,98 +60,51 @@ public class ProductController {
 		System.out.println("/addPRoduct.do");
 		//Business Logic
 		productService.addProduct(product);
-		
+		System.out.println(product+"프로덕트 잘들어왔니?"); 
 		return "redirect:/product/addProduct.jsp";
 	}
 	
 	@RequestMapping("/getProduct.do")
-	public String getProduct( @RequestParam("prodNo") String userId , Model model ) throws Exception {
+	public String getProduct( @RequestParam("prodNo") int prodNo , Model model ) throws Exception {
 		
 		System.out.println("/getUser.do");
 		//Business Logic
-		User user = userService.getUser(userId);
+		Product product = productService.getProduct(prodNo);
 		// Model 과 View 연결
-		model.addAttribute("user", user);
-		
-		return "forward:/user/getUser.jsp";
+		model.addAttribute("product", product);
+		System.out.println(product + "컨트롤부분 널체크" + prodNo+ "prodNo조건 잘들어왔는지?");
+		return "forward:/product/getProduct.jsp";
 	}
 	
-	@RequestMapping("/updateUserView.do")
-	public String updateUserView( @RequestParam("userId") String userId , Model model ) throws Exception{
+	@RequestMapping("/updateProductView.do")
+	public String updateProductView( @RequestParam("prodNo") int prodNo , Model model ) throws Exception{
 
 		System.out.println("/updateUserView.do");
 		//Business Logic
-		User user = userService.getUser(userId);
+		Product product = productService.getProduct(prodNo);
 		// Model 과 View 연결
-		model.addAttribute("user", user);
+		System.out.println("[before] product을 받아왔는지 확인합니다 "+product+" 이상없을시 진행합니다.");
+		System.out.println("prodNo을 받아왔는지 확인합니다 "+prodNo+" 이상없을시 진행합니다.");
 		
-		return "forward:/user/updateUser.jsp";
+		model.addAttribute("product", product);
+		System.out.println("[after] product을 받아왔는지 확인합니다 "+product+" 이상없을시 진행합니다.");
+		return "forward:/product/updateProductView.jsp";
 	}
 	
-	@RequestMapping("/updateUser.do")
-	public String updateUser( @ModelAttribute("user") User user , Model model , HttpSession session) throws Exception{
+	@RequestMapping("/updateProduct.do")
+	public String updateProduct( @ModelAttribute("product") Product product , Model model , HttpSession session) throws Exception{
 
-		System.out.println("/updateUser.do");
+		System.out.println("/updateProduct.do");
 		//Business Logic
-		userService.updateUser(user);
+		productService.updateProduct(product);
 		
-		String sessionId=((User)session.getAttribute("user")).getUserId();
-		if(sessionId.equals(user.getUserId())){
-			session.setAttribute("user", user);
-		}
-		
-		return "redirect:/getUser.do?userId="+user.getUserId();
+		return "redirect:/getProduct.do?prodNo="+product.getProdNo()+"&menu=manage";
 	}
 	
-	@RequestMapping("/loginView.do")
-	public String loginView() throws Exception{
+	@RequestMapping("/listProduct.do")
+	public String listProduct( @ModelAttribute("search") Search search , Model model , HttpServletRequest request) throws Exception{
 		
-		System.out.println("/loginView.do");
-
-		return "redirect:/user/loginView.jsp";
-	}
-	
-	@RequestMapping("/login.do")
-	public String login(@ModelAttribute("user") User user , HttpSession session ) throws Exception{
-		
-		System.out.println("/login.do");
-		//Business Logic
-		User dbUser=userService.getUser(user.getUserId());
-		
-		if( user.getPassword().equals(dbUser.getPassword())){
-			session.setAttribute("user", dbUser);
-		}
-		
-		return "redirect:/index.jsp";
-	}
-	
-	@RequestMapping("/logout.do")
-	public String logout(HttpSession session ) throws Exception{
-		
-		System.out.println("/logout.do");
-		
-		session.invalidate();
-		
-		return "redirect:/index.jsp";
-	}
-	
-	@RequestMapping("/checkDuplication.do")
-	public String checkDuplication( @RequestParam("userId") String userId , Model model ) throws Exception{
-		
-		System.out.println("/checkDuplication.do");
-		//Business Logic
-		boolean result=userService.checkDuplication(userId);
-		// Model 과 View 연결
-		model.addAttribute("result", new Boolean(result));
-		model.addAttribute("userId", userId);
-
-		return "forward:/user/checkDuplication.jsp";
-	}
-	
-	@RequestMapping("/listUser.do")
-	public String listUser( @ModelAttribute("search") Search search , Model model , HttpServletRequest request) throws Exception{
-		
-		System.out.println("/listUser.do");
+		System.out.println("/listProduct.do");
 		
 		if(search.getCurrentPage() ==0 ){
 			search.setCurrentPage(1);
