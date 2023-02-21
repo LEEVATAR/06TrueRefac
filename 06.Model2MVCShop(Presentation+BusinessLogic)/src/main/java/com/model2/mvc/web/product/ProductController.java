@@ -112,7 +112,7 @@ public class ProductController {
 		search.setPageSize(pageSize);
 		
 		// Business logic ผ๖วเ
-		Map<String , Object> map=userService.getUserList(search);
+		Map<String , Object> map=productService.getProductList(search);
 		
 		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
 		System.out.println(resultPage);
@@ -122,6 +122,6 @@ public class ProductController {
 		model.addAttribute("resultPage", resultPage);
 		model.addAttribute("search", search);
 		
-		return "forward:/user/listUser.jsp";
+		return "forward:/user/listProduct.jsp";
 	}
 }
