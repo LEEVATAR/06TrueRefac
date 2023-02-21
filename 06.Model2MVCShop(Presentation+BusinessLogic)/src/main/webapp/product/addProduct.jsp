@@ -52,7 +52,7 @@
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<%-- <td width="105"><%= product.getProdName() %></td>--%>
-					<td width="105">${ product.getProdName }</td>
+					<td width="105">${ product.prodName }</td>
 				</tr>
 			</table>
 		</td>
@@ -67,7 +67,7 @@
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<%-- <td class="ct_write01"><%= product.getProdDetail() %></td>--%>
-		<td class="ct_write01">${ product.getProdDetail }</td>
+		<td class="ct_write01">${ product.prodDetail }</td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
@@ -79,7 +79,7 @@
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<%-- <td class="ct_write01"><%= product.getManuDate() %></td>--%>
-		<td class="ct_write01"> ${ product.getManuDate }</td>
+		<td class="ct_write01"> ${ product.manuDate }</td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
@@ -90,7 +90,7 @@
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<%--<td class="ct_write01"><%= product.getPrice() %></td> --%>
-		<td class="ct_write01">${product.getPrice}</td>
+		<td class="ct_write01">${product.price}</td>
 	</tr>
 
 	<tr>
