@@ -1,37 +1,7 @@
 <%@ page contentType="text/html; charset=EUC-KR" %>
-<%@page import="com.model2.mvc.service.product.ProductService"%>
+<%@ page import="com.model2.mvc.service.product.ProductService"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
-
-
-<%-- EL/JSTL로 주석처리 
-<%@ page import="java.util.*"  %>
-
-<%@ page import="com.model2.mvc.service.domain.Product" %>
-<%@ page import="com.model2.mvc.common.*" %>
-<%@ page import="com.model2.mvc.common.util.*"%>
-<%
-	List<Product> list = (List<Product>)request.getAttribute("list");
-	
-	Page resultPage=(Page)request.getAttribute("resultPage");
-	
-	Search search = (Search)request.getAttribute("search");
-	//null을 "" (nullString)으로 변경함
-	String searchCondition = CommonUtil.null2str(search.getSearchCondition());
-	String searchKeyword = CommonUtil.null2str(search.getSearchKeyword());
-	//System.out.println("currentPage JSP"+currentPage);
-	String menu = request.getParameter("menu");
-	String title;
-	
-	if(menu.equals("manage")){
-		title = "상품 관리";
-	} else {
-		title = "상품 상세조회";
-	}
-	
-%>
---%>
 <html>
 <head>
 <title>상품 목록조회</title>
@@ -42,7 +12,6 @@
 
 function fncGetProductList(currentPage){
 	document.getElementById("currentPage").value = currentPage;
-	currentPage;
 	document.getElementById("menu").value = menu;
    	document.detailForm.submit();		
 }
@@ -50,11 +19,11 @@ function fncGetProductList(currentPage){
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
-
+<c:set var = "pageType" value="product" scope="request"/>
 <div style="width:98%; margin-left:10px;">
 
 
-<form name="detailForm" action="/listProduct.do?menu=${ menu }" method="post">
+<form name="detailForm" action="/listProduct.do?menu=${ param.menu }" method="post">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -64,8 +33,7 @@ function fncGetProductList(currentPage){
 		<td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left:10px;">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
-					<td width="93%" class="ct_ttl01">					
-							<%--  <%= title %> ${ title } --%>							
+					<td width="93%" class="ct_ttl01">								
 					<c:choose>
 						<c:when test = "${param.menu eq 'manage'}">
 						상품 관리
@@ -90,10 +58,6 @@ function fncGetProductList(currentPage){
 	<tr>
 		<td align="right">
 			<select name="searchCondition" class="ct_input_g" style="width:80px">
-				<%-- <option value="0"<%= (searchCondition.equals("0") ? "selected" : "")%>>상품번호</option>
-				<option value="1"<%= (searchCondition.equals("1") ? "selected" : "")%>>상품명</option>
-				<option value="2"<%= (searchCondition.equals("2") ? "selected" : "")%>>상품가격</option>
-				--%>
 				<option value="0" ${! empty search.searchCondition.equals("0") ? "selected" : "" }>상품명</option>
 				<option value="1" ${! empty search.searchCondition.equals("1") ? "selected" : ""}>상품명</option>
 				<option value="2" ${! empty search.searchCondition.equals("2") ? "selected" : ""}>상품가격</option>
@@ -138,65 +102,29 @@ function fncGetProductList(currentPage){
 	<tr>
 		<td colspan="11" bgcolor="808285" height="1"></td>
 	</tr>
-	<%--
-	<% 	
-		for(int i=0; i<list.size(); i++) {
-			Product vo = list.get(i);
-	%>	
-	<tr class="ct_list_pop">
-		<td align="center"><%=i + 1%></td>
-		<td></td>
-		<td align="left">
-		<a href="
-		
-		<% if(menu.equals("manage")) {%>
-		/updateProductView.do
-		<% }else{ %>
-		/getProduct.do
-		<% } %>
-		?prodNo=<%=vo.getProdNo() %>&menu=<%=menu%>"><%=vo.getProdName() %></a>
-				</td>
-		
-		<td></td>
-		<td align="left"><%= vo.getPrice() %></td>
-		<td></td>
-		<td align="left"><%= vo.getRegDate() %></td>
-		<td></td>
-		<td align="left">
-		
-		<%= vo.getProTranCode()  %>
-		<% } %>
-			
-		
-		</td>	
-		<td colspan="11" bgcolor="808285" height="1"></td>
-	</tr>
-	 --%>
+	
 	<c:set var="i" value="0" />
 	<c:forEach var="product" items="${list}">
-		<c:set var="i" value="${i+1}"/>	
+		<c:set var="i" value="${ i+1 }"/>	
 		<tr class="ct_list_pop">
-			<td align="center">${i}</td>
+			<td align="center">${ i }</td>
 			<td></td>
 			<td align="left">
-			<a href="
-			
-			${param.menu eq 'manage'}
-			/updateProductView.do
-			${param.menu eq 'search'}
-			/getProduct.do
-						?prodNo=${product.prodNo}&menu=${param.menu}">${product.prodName}</a>
-					</td>
-			
+			<c:choose>
+				<c:when test = "${param.menu eq 'manage'}">
+			<a href="/updateProductView.do?prodNo=${product.prodNo}&menu=manage">${product.prodName}</a>
+				</c:when>
+				<c:when test = "${param.menu eq 'search'}">
+			<a href="/getProduct.do?prodNo=${product.prodNo}&menu=search">${product.prodName}</a>
+				</c:when>
+			</c:choose>
+			</td>
 			<td></td>
 			<td align="left">${product.price}</td>
 			<td></td>
 			<td align="left">${product.regDate}</td>
 			<td></td>
-			<td align="left">
-			
-			${product.proTranCode}
-			</td>	
+			<td align="left">${product.proTranCode}</td>	
 		</tr>
 		</c:forEach>
 		<tr>
@@ -208,23 +136,6 @@ function fncGetProductList(currentPage){
 	<tr>
 		<td align="center">
 		   <input type="hidden" id="currentPage" name="currentPage" value=""/>
-			<%-- /////////////////////// EL / JSTL 적용으로 주석 처리 ////////////////////////
-			<% if( resultPage.getCurrentPage() <= resultPage.getPageUnit() ){ %>
-					◀ 이전
-			<% }else{ %>
-					<a href="javascript:fncGetProductList('<%=resultPage.getCurrentPage()-1%>')">◀ 이전</a>
-			<% } %>
-
-			<%	for(int i=resultPage.getBeginUnitPage();i<= resultPage.getEndUnitPage() ;i++){	%>
-					<a href="javascript:fncGetProductList('<%=i %>');"><%=i %></a>
-			<% 	}  %>
-	
-			<% if( resultPage.getEndUnitPage() >= resultPage.getMaxPage() ){ %>
-					이후 ▶
-			<% }else{ %>
-					<a href="javascript:fncGetProductList('<%=resultPage.getEndUnitPage()+1%>')">이후 ▶</a>
-			<% } %>
-			/////////////////////// EL / JSTL 적용으로 주석 처리 //////////////////////// --%>
 			<jsp:include page="../common/pageNavigator.jsp"/>
     	</td>
 	</tr>

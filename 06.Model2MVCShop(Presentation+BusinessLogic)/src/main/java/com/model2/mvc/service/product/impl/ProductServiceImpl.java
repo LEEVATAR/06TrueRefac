@@ -15,7 +15,7 @@ import com.model2.mvc.service.product.ProductDao;
 
 
 
-//==> 회원관리 서비스 구현
+//==> 상품관리 서비스 구현
 @Service("productServiceImpl")
 public class ProductServiceImpl implements ProductService{
 	
@@ -34,6 +34,7 @@ public class ProductServiceImpl implements ProductService{
 
 	///Method
 	public void addProduct(Product product) throws Exception {
+		product.setManuDate(splitAndConcateManufactureDay(product.getManuDate()));
 		productDao.addProduct(product);
 	}
 
@@ -51,7 +52,20 @@ public class ProductServiceImpl implements ProductService{
 		
 		return map;
 	}
-
+	public static String splitAndConcateManufactureDay(String manuDay) {
+		String result = "";
+		
+		if(manuDay != null) {
+			String [] arr = manuDay.split("-");
+			
+			for(String s : arr) {
+				result += s;
+			}
+		}
+		System.out.println("what is result"+ result);
+		return result;
+	}
+	
 	public void updateProduct(Product product) throws Exception {
 		productDao.updateProduct(product);
 	}

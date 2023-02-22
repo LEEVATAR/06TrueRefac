@@ -21,7 +21,7 @@
 	<insert 	id="addProduct"		parameterType="product" >
 	 	INSERT
 		INTO product( prod_no , prod_name , prod_detail , manufacture_day , price, image_file, reg_date) 
-		VALUES	 (seq_product_prod_no.nextval, #{prodName} , #{prodDetail} , #{manuDate}, #{price:VARCHAR}, #{fileName}, SYSDATE)
+		VALUES	 (seq_product_prod_no.nextval, #{prodName} , #{prodDetail} , #{manuDate}, #{price}, #{fileName}, SYSDATE)
 	 </insert>
 	 
 	 <!-- SQL : SELECT ONE -->
@@ -31,6 +31,7 @@
 		FROM product 
 		WHERE prod_no = #{value}
 	 </select>
+	 
 	 
 	 <!-- SQL : UPDATE -->
 	 <update	id="updateProduct"	parameterType="product" >

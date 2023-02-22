@@ -21,7 +21,7 @@
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
-
+<c:set var = "pageType" value="user" scope="request"/>
 <div style="width:98%; margin-left:10px;">
 
 <form name="detailForm" action="/listUser.do" method="post">

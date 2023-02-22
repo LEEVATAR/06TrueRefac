@@ -97,8 +97,7 @@ public class UserController {
 		String sessionId=((User)session.getAttribute("user")).getUserId();
 		if(sessionId.equals(user.getUserId())){
 			session.setAttribute("user", user);
-		}
-		
+		}		
 		return "redirect:/getUser.do?userId="+user.getUserId();
 	}
 	

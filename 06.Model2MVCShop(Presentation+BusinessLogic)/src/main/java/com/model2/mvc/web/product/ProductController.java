@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Product;
-import com.model2.mvc.service.domain.User;
 import com.model2.mvc.service.product.ProductService;
 
 
@@ -45,29 +44,20 @@ public class ProductController {
 	//@Value("#{commonProperties['pageSize'] ?: 2}")만약 오타일때 없으면 40번라인기준 3으로 들어가라, 44번라인기준 2로 
 	int pageSize;
 	
-	
-//	@RequestMapping("/addProductView.do")
-//	public String addProductView() throws Exception {
-//
-//		System.out.println("/addProductView.do");
-//		
-//		return "redirect:/product/addProductView.jsp";
-//	}
-	
 	@RequestMapping("/addProduct.do")
 	public String addProduct( @ModelAttribute("product") Product product ) throws Exception {
-
-		System.out.println("/addPRoduct.do");
+		System.out.println("/addProduct.do");
 		//Business Logic
 		productService.addProduct(product);
-		System.out.println(product+"프로덕트 잘들어왔니?"); 
-		return "redirect:/product/addProduct.jsp";
+		System.out.println(product+" 프로덕트 잘들어왔니?"); 
+//		System.out.println(product.getProdNo()+"prodNO출력요청");
+		return "forward:/product/getProduct.jsp";
 	}
 	
 	@RequestMapping("/getProduct.do")
 	public String getProduct( @RequestParam("prodNo") int prodNo , Model model ) throws Exception {
 		
-		System.out.println("/getUser.do");
+		System.out.println("/getProduct.do");
 		//Business Logic
 		Product product = productService.getProduct(prodNo);
 		// Model 과 View 연결
@@ -79,7 +69,7 @@ public class ProductController {
 	@RequestMapping("/updateProductView.do")
 	public String updateProductView( @RequestParam("prodNo") int prodNo , Model model ) throws Exception{
 
-		System.out.println("/updateUserView.do");
+		System.out.println("/updateProductView.do");
 		//Business Logic
 		Product product = productService.getProduct(prodNo);
 		// Model 과 View 연결
@@ -96,9 +86,8 @@ public class ProductController {
 
 		System.out.println("/updateProduct.do");
 		//Business Logic
-		productService.updateProduct(product);
-		
-		return "redirect:/getProduct.do?prodNo="+product.getProdNo()+"&menu=manage";
+		productService.updateProduct(product);		
+		return "forward:/product/getProduct.do?prodNo="+product.getProdNo()+"&menu=manage";
 	}
 	
 	@RequestMapping("/listProduct.do")
@@ -122,6 +111,6 @@ public class ProductController {
 		model.addAttribute("resultPage", resultPage);
 		model.addAttribute("search", search);
 		
-		return "forward:/user/listProduct.jsp";
+		return "forward:/product/listProduct.jsp";
 	}
 }

@@ -14,25 +14,22 @@
 	System.out.println("jsp안에서 menu는 지금 무엇인가용?"+menu);
 %>
  //EL/JSTL로 주석처리--%>
- <c:if test = "${param.menu == 'manage'}">
- ${param.menu}
- 지금 menu는 manage입니다.
- </c:if>
- <c:if test = "${param.menu == 'search'}">
- ${param.menu}
- 지금 menu는 search입니다.
- </c:if>
- <c:set var="menu" value="manage" scope="session"/>
- <c:if test ="${param.menu == 'manage' }">
- 	<c:set var="menu" value="search" />
- </c:if>
+ 
+ <script type="text/javascript">
+
+function fncGetProduct(currentPage){
+	document.getElementById("currentPage").value = currentPage;
+	currentPage;
+	document.getElementById("menu").value = menu;
+   	document.detailForm.submit();		
+}
+</script>
+	
  <!-- 
  현재 ${param.menu}는, ${menu}로 진행됩니다.
  ${ sessionScope.level }
   -->
   
- <!--  c:if = "${request.getParameter ==  }-->
- 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
 <title>상품상세조회</title>
@@ -40,7 +37,7 @@
 
 <body bgcolor="#ffffff" text="#000000">
 
-<form name="detailForm" method="post">
+<form name="detailForm" method="post" >
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -69,7 +66,7 @@
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<%-- <td class="ct_write01"><%= product.getProdNo() %></td>--%>
-		<td class="ct_write01">${product.prodNo}</td>
+		<td class="ct_write01">${ product.prodNo }</td>
 	</tr>	
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
@@ -83,7 +80,7 @@
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<%-- <td width="105"><%= product.getProdName() %></td>--%>
-					<td width="105">${product.prodName}</td>
+					<td width="105">${ product.prodName }</td>
 				</tr>
 			</table>
 		</td>
@@ -119,7 +116,7 @@
 		<td width="104" class="ct_write">제조일자</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<%-- <td class="ct_write01"><%= product.getManuDate() %></td>--%>
-		<td class="ct_write01">${product.manuDate }</td>
+		<td class="ct_write01">${product.manuDate}</td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
@@ -128,7 +125,7 @@
 		<td width="104" class="ct_write">가격</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		 <%-- <td class="ct_write01"><%= product.getPrice() %></td>--%>
-		<td class="ct_write01">${product.price }</td>
+		<td class="ct_write01">${product.price}</td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
@@ -154,7 +151,7 @@
 <%--
 	if(menu.equals("manage")) { 
 --%>
-<c:if test = "${param.menu == 'manage' }" >
+	<c:if test = "${param.menu == 'manage' }" >
 
 				<td width="17" height="23">
 					<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
